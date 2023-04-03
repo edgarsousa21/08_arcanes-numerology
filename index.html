@@ -24,10 +24,8 @@
             border: 1px solid black;
             background-color: silver;
             width: 800px;
-            height: 250px;
-            /* margin: 10px 0 0 10px; */
-            /* padding: 20px 50px; */
-
+            height: 300px;
+            
         }
 
         h1 {
@@ -46,7 +44,8 @@
 
         div#res {
             margin-top: 20px;
-            padding: 10px 0 0 20px;  ;
+            padding: 10px 0 0 20px;
+            
 
         }
 
@@ -80,13 +79,6 @@
         #calcule:active {
             opacity: 0.7;
         }
-
-        /*
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            align-content: center; 
-        */
     </style>
 </head>
 
@@ -110,22 +102,34 @@
 
 </body>
 <script>
+
+const tableNumerologyLetter = ["a", "á", "â", "ã", "à", "ä", "b", "c", "ç", "d", "e", "é", "ê", "è", "ë", "f", "g", "h", "i", "í", "ì", "î", "ï", "j", "k", "l", "m", "n", "ñ", "o", "ó", "ô", "õ", "ò", "ö", "p", "q", "r", "s", "t", "u", "ú", "ü", "ù", "v", "w", "x", "y", "z"]
+const tableNumerologyNumber = [1, 3, 8, 4, 2, 2, 2, 3, 6, 4, 5, 7, 3, 1, 1, 8, 3, 5, 1, 3, 2, 8, 2, 1, 2, 3, 4, 5, 8, 7, 9, 5, 1, 5, 5, 8, 1, 2, 3, 4, 6, 8, 3, 3, 6, 6, 6, 1, 7]
     const getArcane = () => {
         const namePerson = document.getElementById('txtn1').value.replace(/\s/g, "");
         const agePerson = document.getElementById('txtn2').value.replace(/\D/g, "");
-        let ageCalc = Number(agePerson)
+        let ageCalc = Number(agePerson) // Idade convertida de string para número
 
 
 
         if (namePerson && agePerson) {
            
-            let arrayOriginal = []
-            let arrayName = []
-            let arrayNameNumber = []
+            let arrayOriginal = [] // letras do nome digitado originalmente, ordenado em Array
+            let arrayName = [] // letras do nome em minúsculas, ordenado em Array
+            let arrayNameNumber = [] // Array dos números correspondentes do nome, de acordo com a tabela
             for (let i = 0; i <= namePerson.length; i++) {
                 arrayName[i] = namePerson.toLowerCase().charAt(i)
                 arrayOriginal[i] = namePerson.charAt(i)
             }
+
+            tableNumerologyLetter.forEach((variable, i) => {
+            arrayName.forEach((variable2, j) => {
+                if (variable === variable2) {
+                    arrayNameNumber[j] = tableNumerologyNumber[i]
+                }
+            })
+
+        })
 
             arrayName.pop()
             const lettername0 = arrayName.length
@@ -137,9 +141,10 @@
                 let idade = age
                 let quantLetrasNome = letterName
                 let quantArcanos = quantLetrasNome - 1
-                let arcano = (90 / quantArcanos)
-                let arcanoAtual = Math.ceil((idade / arcano))
-                res.innerHTML = `<h3>Seu Arcano Atual é: ${arcanoAtual}, Você possui ${quantArcanos} Arcanos</h2> `
+                let arcano = ((90 / quantArcanos))
+                let arcanoAtual = Math.round((idade / arcano))                
+                let arc = arrayNameNumber[arcanoAtual - 1] * 10 + arrayNameNumber[arcanoAtual]
+                res.innerHTML = `<h4>Arcano Dominante: ${arcanoAtual}°, Seu Arcano Atual é: ${arc}, Você possui ${quantArcanos} Arcanos</h2> `
             }
 
         } else {
